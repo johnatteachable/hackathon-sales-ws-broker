@@ -25,8 +25,10 @@ type (
 	}
 
 	product struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
+		ID           int    `json:"id"`
+		Name         string `json:"name"`
+		ThumbnailURL string `json:"thumbnail_url"`
+		URL          string `json:"url"`
 	}
 
 	user struct {
