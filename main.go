@@ -81,9 +81,8 @@ func main() {
 
 	socket := r.Group("/school")
 	{
-		// Establish connection to school websocket and forward data from API request
+		// Establish connection to school websocket and forward data associated channel
 		go socket.GET("/:id", func(c *gin.Context) {
-			//wsHandler(c.Writer, c.Request)
 			stringID := c.Param("id")
 			fmt.Printf("Received request for school/%s\n", stringID)
 			id, err := strconv.Atoi(stringID)
