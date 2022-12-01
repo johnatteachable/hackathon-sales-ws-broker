@@ -118,6 +118,7 @@ func main() {
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "school id must be an int"})
 			}
 
+			ws.CheckOrigin = CheckOrigin
 			fmt.Println("Upgrading endpoint to websocket")
 			conn, err := ws.Upgrade(c.Writer, c.Request, nil)
 			if err != nil {
@@ -150,4 +151,8 @@ func main() {
 	}
 
 	r.Run("localhost:8080")
+}
+
+func CheckOrigin(r *http.Request) bool {
+	return true
 }
