@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type RecentSaleData struct {
@@ -12,15 +13,21 @@ type RecentSaleData struct {
 // Establish connection to websocket and forward data from API request
 func main() {
 	fmt.Println("Starting sales websocket broker")
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Setting up the server!")
+
+	r := gin.Default()
+
+	r.GET("/", func(c *gin.Context) {
+		c.String(200, "Gin here :p")
 	})
 
-	http.HandleFunc("/sale", handleSale)
+	sales := r.Group("sale")
+	{
 
-	http.ListenAndServe(":8080", nil)
-}
+		sales.POST("", func(c *gin.Context) {
+			fmt.Printf("Handling sale")
+			c.JSON(200, nil)
+		})
+	}
 
-func handleSale(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Handling sale")
+	r.Run("localhost:8080")
 }
