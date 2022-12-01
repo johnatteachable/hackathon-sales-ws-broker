@@ -43,17 +43,13 @@ type (
 type corsConfig struct {
 	MaxAgeHours  int64
 	AllowOrigins []string
-	AllowMethods []string
-	AllowHeaders []string
 }
 
 // CORS Cross Origin Resource Sharing middleware
-func CORS(c *corsConfig) gin.HandlerFunc {
+func CORS() gin.HandlerFunc {
 	return cors.New(cors.Config{
-		AllowHeaders: c.AllowHeaders,
-		AllowMethods: c.AllowMethods,
-		MaxAge:       time.Duration(c.MaxAgeHours) * time.Hour,
-		AllowOrigins: c.AllowOrigins,
+		MaxAge:       time.Duration(12) * time.Hour,
+		AllowOrigins: []string{"*"},
 	})
 }
 
@@ -61,14 +57,7 @@ func main() {
 	fmt.Println("Starting sales websocket broker")
 
 	r := gin.New()
-	r.Use(
-		CORS(
-			&corsConfig{
-				MaxAgeHours:  12,
-				AllowOrigins: []string{"*"},
-				// AllowMethods: []string{"GET", "POST"},
-				// AllowHeaders: []string{""},
-			}))
+	r.Use(CORS())
 
 	hc := r.Group("healthcheck")
 	{
