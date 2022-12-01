@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -103,7 +104,7 @@ func main() {
 			defer conn.Close()
 
 			for {
-				//time.Sleep(1 * time.Second)
+				time.Sleep(500 * time.Millisecond)
 				schoolChannel := recentSales[id]
 				if schoolChannel == nil {
 					//fmt.Printf("school channel for ID:%d is nil\n", id)
@@ -122,8 +123,4 @@ func main() {
 	}
 
 	r.Run("localhost:8080")
-}
-
-func wsHandler(w http.ResponseWriter, r *http.Request) {
-
 }
