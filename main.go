@@ -52,6 +52,15 @@ func main() {
 		c.String(200, "Gin here :p")
 	})
 
+	hc := r.Group("healthcheck")
+	{
+		hc.GET("", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"status": "up",
+			})
+		})
+	}
+
 	sales := r.Group("sale")
 	{
 
