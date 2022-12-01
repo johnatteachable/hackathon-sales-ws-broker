@@ -25,8 +25,10 @@ type (
 	}
 
 	product struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
+		ID           int    `json:"id"`
+		Name         string `json:"name"`
+		ThumbnailURL string `json:"thumbnail_url"`
+		URL          string `json:"url"`
 	}
 
 	user struct {
@@ -65,7 +67,7 @@ func main() {
 
 			if recentSales[req.SchoolID] == nil {
 				//init channel
-				recentSales[req.SchoolID] = make(chan recentSaleData, 10)
+				recentSales[req.SchoolID] = make(chan recentSaleData, 100)
 			}
 
 			fmt.Println("Pushing request to channel")
