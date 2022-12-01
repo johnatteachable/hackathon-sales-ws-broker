@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -37,8 +36,6 @@ func main() {
 			fmt.Println("Handling sale")
 
 			test := recentSaleData{SchoolID: "1232123"}
-
-			fmt.Printf("Type is %v \n", reflect.TypeOf(recentSales[test.SchoolID]))
 
 			if recentSales[test.SchoolID] == nil {
 				//init channel
