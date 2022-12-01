@@ -65,7 +65,7 @@ func main() {
 
 			if recentSales[req.SchoolID] == nil {
 				//init channel
-				recentSales[req.SchoolID] = make(chan recentSaleData, 10)
+				recentSales[req.SchoolID] = make(chan recentSaleData, 100)
 			}
 
 			fmt.Println("Pushing request to channel")
