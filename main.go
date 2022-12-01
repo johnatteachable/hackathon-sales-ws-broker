@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -37,10 +39,36 @@ type (
 	}
 )
 
+// CORSConfig configuration struct for the CORS middleware
+type corsConfig struct {
+	MaxAgeHours  int64
+	AllowOrigins []string
+	AllowMethods []string
+	AllowHeaders []string
+}
+
+// CORS Cross Origin Resource Sharing middleware
+func CORS(c *corsConfig) gin.HandlerFunc {
+	return cors.New(cors.Config{
+		AllowHeaders: c.AllowHeaders,
+		AllowMethods: c.AllowMethods,
+		MaxAge:       time.Duration(c.MaxAgeHours) * time.Hour,
+		AllowOrigins: c.AllowOrigins,
+	})
+}
+
 func main() {
 	fmt.Println("Starting sales websocket broker")
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(
+		CORS(
+			&corsConfig{
+				MaxAgeHours:  12,
+				AllowOrigins: []string{"*"},
+				// AllowMethods: []string{"GET", "POST"},
+				// AllowHeaders: []string{""},
+			}))
 
 	hc := r.Group("healthcheck")
 	{
@@ -103,7 +131,7 @@ func main() {
 			defer conn.Close()
 
 			for {
-				//time.Sleep(1 * time.Second)
+				time.Sleep(500 * time.Millisecond)
 				schoolChannel := recentSales[id]
 				if schoolChannel == nil {
 					//fmt.Printf("school channel for ID:%d is nil\n", id)
@@ -122,8 +150,4 @@ func main() {
 	}
 
 	r.Run("localhost:8080")
-}
-
-func wsHandler(w http.ResponseWriter, r *http.Request) {
-
 }
