@@ -59,14 +59,7 @@ func main() {
 	r := gin.New()
 	r.Use(CORS())
 
-	hc := r.Group("healthcheck")
-	{
-		hc.GET("", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"status": "up",
-			})
-		})
-	}
+	r.GET("healthcheck", func(c *gin.Context) { c.JSON(200, gin.H{"status": "up"}) })
 
 	sales := r.Group("sale")
 	{
@@ -75,12 +68,11 @@ func main() {
 			fmt.Println("Handling sale")
 			var req recentSaleData
 
-			fmt.Printf("parsing request: %+v\n", req)
 			if err := c.BindJSON(&req); err != nil {
 				fmt.Printf("error: %s\n", err)
 				return
 			}
-			fmt.Printf("received request: %+v\n", req)
+			fmt.Printf("Received request: %+v\n", req)
 
 			if recentSales[req.SchoolID] == nil {
 				//init channel
@@ -115,9 +107,7 @@ func main() {
 				return
 			}
 
-			fmt.Println("Success, starting for loop")
-			fmt.Printf("looking for school channel ID: %d\n", id)
-
+			fmt.Printf("looking for channel by school ID: %d\n", id)
 			defer conn.Close()
 
 			for {
